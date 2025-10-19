@@ -41,14 +41,13 @@ function showUpdateNotification(version, changelog) {
     </div>
   `;
   
-  notification.querySelector('.update-button').addEventListener('click', () => {
-    // Открываем GitHub репозиторий
-    chrome.runtime.sendMessage({action: 'openGitHub'});
-    // Убираем бейдж
-    chrome.action.setBadgeText({ text: "" });
-    notification.remove();
-    window.close();
-  });
+// В функцию showUpdateNotification:
+
+notification.querySelector('.close-update').addEventListener('click', () => {
+  notification.remove();
+  // Очищаем статус обновления
+  chrome.runtime.sendMessage({action: 'clearUpdateStatus'});
+});
   
   notification.querySelector('.close-update').addEventListener('click', () => {
     notification.remove();
