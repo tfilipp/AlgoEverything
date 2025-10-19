@@ -15,15 +15,19 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
   } else {
     // Инициализация обычного функционала
     initializeApp();
+    // Проверка наличия обновления
+    checkForUpdates();
   }
 });
 
 // Проверка наличия обновления
-chrome.storage.local.get(['updateAvailable', 'newVersion', 'changelog'], (result) => {
-  if (result.updateAvailable && isAlgoritmika) {
-    showUpdateNotification(result.newVersion, result.changelog);
-  }
-});
+function checkForUpdates() {
+  chrome.storage.local.get(['updateAvailable', 'newVersion', 'changelog'], (result) => {
+    if (result.updateAvailable) {
+      showUpdateNotification(result.newVersion, result.changelog);
+    }
+  });
+}
 
 function showUpdateNotification(version, changelog) {
   const notification = document.createElement('div');
@@ -38,15 +42,17 @@ function showUpdateNotification(version, changelog) {
   `;
   
   notification.querySelector('.update-button').addEventListener('click', () => {
-    chrome.tabs.create({
-      url: 'https://github.com/tfilipp/AlgoEverything'
-    });
+    // Открываем GitHub репозиторий
+    chrome.runtime.sendMessage({action: 'openGitHub'});
+    // Убираем бейдж
+    chrome.action.setBadgeText({ text: "" });
     notification.remove();
+    window.close();
   });
   
   notification.querySelector('.close-update').addEventListener('click', () => {
     notification.remove();
-    chrome.action.setBadgeText({ text: "" });
+    // Не убираем бейдж, чтобы пользователь знал об обновлении
   });
   
   document.body.appendChild(notification);
@@ -86,7 +92,12 @@ function initializeApp() {
     chrome.storage.local.set({ enabled });
     
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      chrome.tabs.sendMessage(tabs[0].id, { action: 'toggle', enabled });
+      chrome.tabs.sendMessage(tabs[0].id, { action: 'toggle', enabled }, (response) => {
+        // Игнорируем ошибки если контент скрипт не загружен
+        if (chrome.runtime.lastError) {
+          console.log('Content script not loaded');
+        }
+      });
     });
   });
 
@@ -113,6 +124,10 @@ function initializeApp() {
           type: 'file',
           data: fontData,
           name: fontName
+        }, (response) => {
+          if (chrome.runtime.lastError) {
+            console.log('Content script not loaded');
+          }
         });
         
         // Перезагрузка страницы после применения
@@ -197,6 +212,10 @@ function applyGoogleFont() {
       action: 'applyFont',
       type: 'google',
       name: selectedGoogleFont
+    }, (response) => {
+      if (chrome.runtime.lastError) {
+        console.log('Content script not loaded');
+      }
     });
     
     // Перезагрузка страницы после применения
