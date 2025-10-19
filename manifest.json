@@ -1,0 +1,52 @@
+{
+  "manifest_version": 3,
+  "name": "AlgoEverything",
+  "version": "0.1",
+  "description": "Лучшее расширение для Алгоритмики. Меняйте шрифты, ставьте темы, выгружайте комментарии и профили в HTML, смотрите статы и т.д.",
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "host_permissions": [
+    "http://*.algoritmika.org/*",
+    "https://*.algoritmika.org/*",
+    "https://raw.githubusercontent.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*.algoritmika.org/*",
+        "https://*.algoritmika.org/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "DD.ttf"
+      ],
+      "matches": [
+        "http://*.algoritmika.org/*",
+        "https://*.algoritmika.org/*"
+      ]
+    }
+  ]
+}

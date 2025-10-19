@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div id="main-content" class="container">
+    <header>
+      <h1>AlgoEverything</h1>
+      <label class="toggle">
+        <input type="checkbox" id="toggle-switch">
+        <span class="slider"></span>
+      </label>
+    </header>
+    
+    <nav class="tabs">
+      <button class="tab active" data-tab="file">Шрифт из файла</button>
+      <button class="tab" data-tab="google">Google Fonts</button>
+    </nav>
+    
+    <div class="content">
+      <div id="file-tab" class="tab-content active">
+        <label class="file-upload">
+          <input type="file" id="font-file" accept=".ttf,.otf,.woff,.woff2">
+          <span>↑ Загрузить шрифт</span>
+        </label>
+      </div>
+      
+      <div id="google-tab" class="tab-content">
+        <input type="text" id="search" placeholder="Поиск шрифта...">
+        <div id="fonts-list" class="fonts-list">
+          <div class="loading">Загрузка шрифтов...</div>
+        </div>
+      </div>
+    </div>
+    
+    <footer>
+      <a href="https://vlcguy.t.me" target="_blank">by @vlcguy</a>
+    </footer>
+  </div>
+
+  <div id="wrong-domain" class="wrong-domain" style="display: none;">
+    <h1>AlgoEverything</h1>
+    <div class="message">
+      <p>Я работаю только на algoritmika.org.</p>
+      <p>Поддержку Logika и других доменов/юниверсов завезут позже</p>
+    </div>
+    <footer>
+      <a href="https://vlcguy.t.me" target="_blank">by @vlcguy</a>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
